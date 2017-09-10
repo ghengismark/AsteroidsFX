@@ -6,7 +6,7 @@ All images and audio are free/public domain/public license.*
 
 # Links
 * [JAR file to play](dist/AsteroidsFX.jar)
-* [JavaDocs](dist/javadocs)
+* [JavaDocs](dist/javadoc)
 * [Source](src/asteroidsFX)
 
 # Requirements
