@@ -1,8 +1,7 @@
 # Asteriods FX
-A JavaFX remake of a classic.
-
-*GNU 3 license
-All images and audio are free/public domain/public license.*
+**A JavaFX remake of a classic.**
+GNU 3 license.
+All images and audio are free/public domain/public license.
 
 # Links
 * [JAR file to play](dist/AsteroidsFX.jar)
