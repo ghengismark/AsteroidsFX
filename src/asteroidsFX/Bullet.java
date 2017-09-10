@@ -17,7 +17,6 @@
 package asteroidsFX;
 
 import javafx.scene.Group;
-import javafx.scene.transform.Rotate;
 
 /**
  * Serves as the base for player-fired elements.
@@ -29,6 +28,8 @@ abstract class Bullet extends Sprite {
         
     public Bullet(Group gRoot, double sXScreen, double sYScreen, double angleStart, double speedStart) {
         super(gRoot, sXScreen, sYScreen, angleStart, speedStart);
+        
+        // Unlike everything else, bullets should disappear off the edge of the screen
         wraps = false;
     }       
     

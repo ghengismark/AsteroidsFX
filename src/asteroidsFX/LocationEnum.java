@@ -17,7 +17,7 @@
 package asteroidsFX;
 
 /**
- *
+ * Choices of coordinates on a sprite
  * @author mknapp
  */
 public enum LocationEnum {

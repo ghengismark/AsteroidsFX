@@ -92,6 +92,7 @@ abstract class Sprite extends Group {
     protected Random  diceRoller = new Random();
     
     // The time in nano-seconds between move-frames.
+    // This is to make sprite movement not as dependent on computer speed.
     public static final double NS_MOVE_FRAME = 10000000;
     
      
@@ -103,7 +104,8 @@ abstract class Sprite extends Group {
         root.getChildren().add(this);
         setSpeed(speedStart);
         
-//        BE SURE TO ADD THESE TO NON-ABSTRACT SUBCLASS CONSTRUCTORS        
+//        BE SURE TO ADD THESE TO NON-ABSTRACT SUBCLASS CONSTRUCTORS      
+//        calcXY (LocationEnum.???, x???, y???);
 //        draw();
 //        spriteTimer = new MyTimer();
 //        spriteTimer.start();
@@ -116,6 +118,7 @@ abstract class Sprite extends Group {
     
     /**
      * Return a shape that defines the sprite's footprint, for collision checking
+     * @return The Shape of the footprint
      */  
     public Shape getFootPrint () {
         return footPrint;
@@ -132,12 +135,13 @@ abstract class Sprite extends Group {
         this.setTranslateX(xTopLeft - xTopLeftLoc + this.getTranslateX());
         this.setTranslateY(yTopLeft - yTopLeftLoc + this.getTranslateY());
         setXYBasedOnTopLeft(xTopLeft, yTopLeft);
-        if (wraps)
+        if (wraps) {
             checkBounds();
+        }
     }
     
     /**
-     * Check if the sprite is out of bounds and wrap around if so.
+     * Check if the sprite is out of bounds, and wrap to the other side of the screen if so.
      */  
     public void checkBounds () { 
         
@@ -168,7 +172,10 @@ abstract class Sprite extends Group {
     }
     
     /**
-     * Calculate XY coordinates.
+     * Calculate XY coordinates for all locations on the sprite based one one set.
+     * @param locE The LocationEnum that says where the x and y refer to
+     * @param x The x coord
+     * @param y The y coord
      */  
     public void calcXY (LocationEnum locE, double x, double y) { 
         switch (locE) {
@@ -186,6 +193,8 @@ abstract class Sprite extends Group {
 
     /**
      * Calculate XY coordinates assuming we are given x,y for center.
+     * @param x The x coord
+     * @param y The y coord
      */  
     public void setXYBasedOnCenter (double x, double y) { 
         xCenterLoc =  x;
@@ -198,6 +207,8 @@ abstract class Sprite extends Group {
     
     /**
      * Calculate XY coordinates assuming we are given x,y for top-left.
+     * @param x The x coord
+     * @param y The y coord
      */  
     public void setXYBasedOnTopLeft (double x, double y) { 
         xTopLeftLoc = x;
@@ -210,6 +221,8 @@ abstract class Sprite extends Group {
 
     /**
      * Calculate XY coordinates assuming we are given x,y for bottom-center.
+     * @param x The x coord
+     * @param y The y coord
      */  
     public void setXYBasedOnBottomCenter (double x, double y) { 
         xBottomCenterLoc = x;
@@ -222,7 +235,6 @@ abstract class Sprite extends Group {
  
     /**
      * Simple getter of what angle the sprite in pointing to
-     *
      * @return     Angle in degrees. '0' is 12 o'clock. Can be negative.
      */   
     public double getAngleFacing() {
@@ -231,7 +243,6 @@ abstract class Sprite extends Group {
     
     /**
      * Set the angle the sprite should be pointing to.
-     *
      * @param   angle    Angle in degrees. '0' is 12 o'clock. Can be negative.
      */  
     public void setAngleFacing(double angle) {
@@ -242,7 +253,7 @@ abstract class Sprite extends Group {
         
     /**
      * Start the death process.
-     * Start death animations, housekeeping, etc.
+     * Start death animations, sounds, spawns, housekeeping, etc.
      */  
     public void startDeath () { 
         isDying = true;
@@ -277,9 +288,7 @@ abstract class Sprite extends Group {
     }    
     
     /**
-     * A simple setter.
-     * Calculates velocity too.
-     *
+     * A simple setter which also calculates velocity too.
      * @param   sSpeed    The distance in points the sprite will move per frame.
      */  
     public void setSpeed (double sSpeed) { 
@@ -346,6 +355,7 @@ abstract class Sprite extends Group {
     
     /**
      * Does the math to see if this sprite collides with another.
+     * Compared to hitByIntersect, this method is less accurate for non-circle shapes, but much quicker
      * @param   target    The Enemy object to check
      * @return            True/False if it IS a hit.
      */   
@@ -360,12 +370,11 @@ abstract class Sprite extends Group {
     
     /**
      * Does the math to see if this sprite collides with another.
+     * Compared to hitByRadius, this method is more accurate for non-circle shapes, but much slower
      * @param   target    The Enemy object to check
      * @return            True/False if it IS a hit.
      */   
     public boolean hitByIntersect(Sprite target) {
-//        Shape inter = Shape.intersect(this.getFootPrint(), target.getFootPrint());
-//        boolean inRange = !(inter.getLayoutBounds().getHeight()<=0 || inter.getLayoutBounds().getWidth()<=0);
         Shape inter = Shape.intersect(this.getFootPrint(), target.getFootPrint());
         boolean inRange = !(inter.getLayoutBounds().getHeight()<=0 || inter.getLayoutBounds().getWidth()<=0);        
         boolean bothAlive = (!this.isDying() && !this.isDead() && !target.isDying() && !target.isDead());
@@ -381,8 +390,9 @@ abstract class Sprite extends Group {
             spriteTimer.stop();
         }
         if (!sPause && paused) {
-            if (!isDead())
-                    spriteTimer.start();
+            if (!isDead()) {
+                spriteTimer.start();
+            }
             spriteTimer.setTimerPaused(true);
         }
         paused = sPause;
@@ -396,8 +406,9 @@ abstract class Sprite extends Group {
         return(paused);
     } 
     
-    // We need to make a custom timer since we need to add some vars to mess with
-    // the pause/unpause feature
+    /**
+     * This is the sprites own time for it's movement and pausing.
+     */   
     public class MyTimer extends AnimationTimer {
 
         private long    timealive   = 0;

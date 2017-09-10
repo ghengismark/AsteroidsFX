@@ -20,7 +20,6 @@ import javafx.scene.Group;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 
 /**
  * A star is a single point of light in the background
@@ -41,26 +40,25 @@ public final class Star extends Sprite {
         draw();
     }
 
+    /**
+     * Create the graphical image and add it to a parent Group.
+     */  
     @Override
     public void draw() {
         if (starClass > 1) {
             circle = new Circle(xCenterLoc, yCenterLoc, radius, Color.WHITE);
             circle.setStroke(Color.GRAY);
             circle.setStrokeWidth(radius/2);
-
             BoxBlur bb = new BoxBlur();
             bb.setWidth(radius/2);
             bb.setHeight(radius/2);
             bb.setIterations(3);
             this.setEffect(bb);
-            
-            this.getChildren().add(circle);
-            
         } else {
-            Circle circle = new Circle(xCenterLoc, yCenterLoc, 1, Color.WHITE);
-            this.getChildren().add(circle);
+            circle = new Circle(xCenterLoc, yCenterLoc, 1, Color.WHITE);
         }
         
+        this.getChildren().add(circle);
         footPrint = circle;
     }    
 }

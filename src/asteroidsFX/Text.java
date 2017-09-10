@@ -22,7 +22,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
- *
+ * All text appears from this class.
+ * Good to put it all in one class since later I might make a graphical font using this.
  * @author Mark Knapp
  */
 public class Text {
@@ -59,7 +60,7 @@ public class Text {
     } 
     
     /**
-     * Create YOU LOSE on screen
+     * Create GAME OVER on screen
      * @param   xLoc    The x coordinate of the top-left corner
      * @param   yLoc    The y coordinate of the top-left corner
      * @return              The JavaFX label object
@@ -77,8 +78,9 @@ public class Text {
             boolean lastColor = true;
             @Override
             public void handle(long timestamp) {
-                if (lastFlash == 0)
+                if (lastFlash == 0) {
                     lastFlash = timestamp;
+                }
                 if ((timestamp-lastFlash >= 0.25*(long)1000000000)) {
                     if (lastColor) {
                         loseLabel.setTextFill(Color.RED);
@@ -138,7 +140,7 @@ public class Text {
     } 
     
     /**
-     * Put the score up
+     * Put the difficulty up
      * @param   xLoc    The x coordinate of the top-left corner
      * @param   yLoc    The y coordinate of the top-left corner
      * @return              The JavaFX label object

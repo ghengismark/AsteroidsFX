@@ -22,9 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
- * Serves as the base for player-fired elements.
- * Extend this class for specialized bullets.
- *
+ * The simplest of bullets: a white circle that goes PEW PEW!
  * @author Mark Knapp
  */
 public class BulletSimple extends Bullet {
@@ -57,7 +55,7 @@ public class BulletSimple extends Bullet {
     }  
     
     /**
-     * Create the image of the sprite.
+     * Create the graphical image and add it to a parent Group.
      */  
     @Override
     public void draw () { 

@@ -1,9 +1,13 @@
 # Asteriods FX
 A JavaFX remake of a classic.
 
-*GNU 3 license*
+*GNU 3 license
+All images and audio are free/public domain/public license.*
 
-*All images and audio are free/public domain/public license.*
+# Links
+* [JAR file to play](dist/AsteroidsFX.jar)
+* [JavaDocs](dist/javadocs)
+* [Source](src/asteroidsFX)
 
 # Requirements
 * Requires Java 8 installed on your system to run. 

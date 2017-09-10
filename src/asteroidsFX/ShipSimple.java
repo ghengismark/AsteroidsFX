@@ -19,10 +19,9 @@ package asteroidsFX;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 
 /**
- *
+ * This is the most basic ship: A triangle that pewpews little white balls.
  * @author Mark Knapp
  */
 public class ShipSimple extends Ship {
@@ -38,6 +37,9 @@ public class ShipSimple extends Ship {
         spriteTimer.start();
     }
 
+    /**
+     * Create the graphical image and add it to a parent Group.
+     */  
     @Override
     void draw() {
         Polygon polygon = new Polygon();

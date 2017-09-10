@@ -16,7 +16,6 @@
  */
 package asteroidsFX;
 
-import java.util.Iterator;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -25,12 +24,10 @@ import javafx.scene.Group;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
 /**
- *
+ * A basic asteroid, represented by a jagged polygon.
  * @author Mark Knapp
  */
 public class Asteroid extends Sprite {
@@ -131,13 +128,16 @@ public class Asteroid extends Sprite {
     }    
 
     /**
-     * Fire the forward thrusters
+     * Fire the forward thrusters.
      */  
     public void thrust() {
         xVel += Math.cos(Math.toRadians(angleFacing-90)) * thrust;
         yVel += Math.sin(Math.toRadians(angleFacing-90)) * thrust;
     }        
 
+    /**
+     * Create the graphical image and add it to a parent Group.
+     */  
     @Override
     void draw() {
         Polygon     polygon = new Polygon();
@@ -172,13 +172,15 @@ public class Asteroid extends Sprite {
         // If the asteroid is not too small it should break up into 1 or 2 smaller ones
         if (mass > MINIMUM_MASS_FOR_SPLIT) {
             asteroidField.add(mass/2, xCenterLoc, yCenterLoc);
-            if (diceRoller.nextBoolean())
+            if (diceRoller.nextBoolean()) {
                 asteroidField.add(mass/2, xCenterLoc, yCenterLoc);
+            }
         }
         
         EventHandler<ActionEvent> deathEventHandler = e -> {
-            if (deathIndex > 6) 
+            if (deathIndex > 6) {
                 finishDeath();
+            }
             this.setOpacity(1-(0.15*deathIndex++));
         };    
         deathAnimation = new Timeline(new KeyFrame(Duration.millis(50), deathEventHandler));

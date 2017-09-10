@@ -21,7 +21,7 @@ import java.util.Random;
 import javafx.scene.Group;
 
 /**
- *
+ * A Group that holds all the background stars and generates them.
  * @author Mark Knapp
  */
 public class StarField extends Group {

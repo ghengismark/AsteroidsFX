@@ -19,11 +19,9 @@ package asteroidsFX;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javafx.scene.Group;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 
 /**
- *
+ * This is the abstract class for all player ships.
  * @author Mark Knapp
  */
 abstract class Ship extends Sprite {
@@ -54,12 +52,12 @@ abstract class Ship extends Sprite {
     
     /**
      * Rotate the ship a fixed amount based on settings
-     *
      * @param   clockwise    The direction of rotation. clockwise or counter
      */  
     public void rotate (boolean clockwise) {
-        if (!paused)
+        if (!paused) {
             setAngleFacing(angleFacing + rotationRate * (clockwise ? 1 : -1));
+        }
     }
 
     /**
@@ -76,7 +74,9 @@ abstract class Ship extends Sprite {
     }        
     
     /**
-     * Reset the ship to a starting location
+     * Reset the ship to a starting location.
+     * @param   sXTopLeftLoc    X coordinate of where it should be reset to.
+     * @param   sYTopLeftLoc    Y coordinate of where it should be reset to.
      */  
     public void reset(double sXTopLeftLoc, double sYTopLeftLoc) {
         setAngleFacing(0);
@@ -85,12 +85,14 @@ abstract class Ship extends Sprite {
         clearAllBullets();
     }      
 
+    /**
+     * Remove all bullets visually and from ArrayLists for the GC.
+     */ 
     public void clearAllBullets() {
         for (Iterator<Bullet> iterator = bulletList.iterator(); iterator.hasNext();){
             Bullet item = iterator.next();
             bullets.getChildren().remove(item);
             iterator.remove();
-            
         }
     }    
     
@@ -124,6 +126,7 @@ abstract class Ship extends Sprite {
     
     /**
      * Get the bullet sub-class that this gun fires.
+     * A non-abstract ship sub-class will overwrite this to assign the bullet type that the ship fires
      * @param gRoot The bullet group that the new bullet should join
      * @param xBottomCenterStart The X,Y coord
      * @param yBottomCenterStart The X,Y coord 
@@ -132,7 +135,6 @@ abstract class Ship extends Sprite {
      */  
     abstract Bullet getNewBullet (Group gRoot, double xBottomCenterStart, double yBottomCenterStart, double angleStart);    
 
-    /**
     /**
      * Potentially fire the gun, assuming the gun is ready based on fire rate.
      * @param timestamp   A ns timestamp provided by an AnimationTimer
@@ -145,7 +147,7 @@ abstract class Ship extends Sprite {
     };      
     
     /**
-     * Do a sweep of bullets that timed out
+     * Do a sweep of bullets that timed out and remove from our ArrayList for the GC.
      */  
     public void clearDeadBullets (){
         for (Iterator<Bullet> iterator = bulletList.iterator(); iterator.hasNext();){
@@ -166,8 +168,9 @@ abstract class Ship extends Sprite {
             spriteTimer.stop();
         }
         if (!sPause && paused) {
-            if (!isDead())
-                    spriteTimer.start();
+            if (!isDead()) {
+                spriteTimer.start();
+            }
             spriteTimer.setTimerPaused(true);
             paused = false;            
         }

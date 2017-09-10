@@ -38,16 +38,26 @@ public class AsteroidField extends Group {
         ySize = yStartSize;
     }
     
-    // Create a new asteroid at a random border. 
+    /**
+     * Create a new asteroid at a random border. 
+     */ 
     public void add() {
        asteroidList.add(new Asteroid(this, this, xSize, ySize));
     }    
 
-    // Create a new asteroid at a specific spot, with a specific size. 
+    /**
+     * Create a new asteroid at a specific spot, with a specific size.
+     * @param sMass The mass of the new 'roid. 0 to 1.
+     * @param xCenter The y coord
+     * @param yCenter The x coord
+     */ 
     public void add(double sMass, double xCenter, double yCenter) {
        asteroidList.add(new Asteroid(this, this, xSize, ySize, sMass, xCenter, yCenter));
     }  
     
+    /**
+     * Remove all asteroids visually and from ArrayLists for the GC.
+     */ 
     public void clearAll() {
         for (Iterator<Asteroid> iterator = asteroidList.iterator(); iterator.hasNext();){
             Asteroid item = iterator.next();
@@ -56,15 +66,27 @@ public class AsteroidField extends Group {
         }
     }
     
+    /**
+     * Check if a Ship has collided with any asteroids in this field.
+     * @param target The Ship to be checked
+     * @return True if collision, false if not
+     */ 
     public boolean checkForShipCollision(Ship target) {
         for (Iterator<Asteroid> iterator = asteroidList.iterator(); iterator.hasNext();){
             Asteroid item = iterator.next();
-            if (item.hitByIntersect(target))
+            if (item.hitByIntersect(target)) {
                 return true;
+            }
         }
         return false;
     }    
 
+    /**
+     * Check if any of the bullets fired(owned) by a Ship has collided with any asteroids in this field.
+     * We return void instead of boolean since we handle the collision with this method.
+     * @param target The Ship which owns the bullets to be checked.
+     * @param scorer The Text object that we can use to update the score
+     */ 
     public void checkForBulletCollision(Ship target, Text scorer) {
         ArrayList<Asteroid> needToDie = new ArrayList<Asteroid>();
         for (Iterator<Asteroid> iterator = asteroidList.iterator(); iterator.hasNext();){
@@ -72,7 +94,8 @@ public class AsteroidField extends Group {
             for (Iterator<Bullet> iterator2 = target.bulletList.iterator(); iterator2.hasNext();){
                 Bullet item2 = iterator2.next();
                 // We use hitByRadius instead of hitByIntersect here, since it is much cheaper
-                // and we run into performance issues otherwise. 
+                // and we run into performance issues otherwise with the permuntations of 
+                // bullets to asteroids.
                 if (item2.hitByRadius(item)) {
                     needToDie.add(item);
                     item2.startDeath();
@@ -91,12 +114,15 @@ public class AsteroidField extends Group {
         }
     }       
     
-    public boolean setPause(boolean paused) {
+    /**
+     * Pause or unpause the whole field.
+     * @param paused True is paused. False is not.
+     */  
+    public void setPause(boolean paused) {
         for (Iterator<Asteroid> iterator = asteroidList.iterator(); iterator.hasNext();){
             Asteroid item = iterator.next();
             item.setPause(paused);
         }
-        return false;
     }    
 
     /**
@@ -109,10 +135,18 @@ public class AsteroidField extends Group {
         }
     }; 
     
+    /**
+     * Simple getter
+     * @return The number of the minimum limit of asteroids in the field.
+     */  
     public int getDensity() {
         return density;
     }
 
+    /**
+     * Simple setter
+     * @param density The number of the minimum limit of asteroids in the field.
+     */  
     public void setDensity(int density) {
         this.density = density;
     }    

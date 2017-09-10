@@ -16,8 +16,6 @@
  */
 package asteroidsFX;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -25,21 +23,14 @@ import static javafx.application.Application.launch;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
 /**
- *
+ * A JavaFX remake of a classic.
  * @author mknapp
  */
 public class AsteroidsFX extends Application {
@@ -51,6 +42,7 @@ public class AsteroidsFX extends Application {
     
     // The starting number of Asteroids
     public final static int          STARTING_NUM_OF_ASTEROIDS = 7;
+    
     // How many seconds go by before the lower limit of asteroids number is increased.
     public final static int          SECONDS_TO_ADD            = 10;
     
@@ -95,7 +87,7 @@ public class AsteroidsFX extends Application {
     public void start(Stage primaryStage) {   
         
         mainStage = primaryStage;
-        mainStage.setTitle("Star Control FX");
+        mainStage.setTitle("Asteroids FX");
         
         root = new Group();
         scene = new Scene(root, screenX, screenY, Color.BLACK);
@@ -129,9 +121,6 @@ public class AsteroidsFX extends Application {
      * Resets game.
      * Basically create everything new. The Java GC will take care of the old
      * after we disconnect it.
-     * 
-     * NOTE: Currently disabled since it causes crashes. Just using it as init
-     * for the moment
      */   
     public void reset() {
         setPause(true);
@@ -174,9 +163,7 @@ public class AsteroidsFX extends Application {
     } 
     
     /**
-     * Take action on key presses
-     * 
-     * @param   gun     We need to pass in the gun object that the keys control
+     * Take action on key presses.
      * @see                 AnimationTimer, anyPressed
      */   
     private void handleKeyPress() {
@@ -254,8 +241,9 @@ public class AsteroidsFX extends Application {
                 }
 
                 // Periodically raise the difficulty
-                if (asteroidAddInterval == 0)
-                        asteroidAddInterval = timestamp;
+                if (asteroidAddInterval == 0) {
+                    asteroidAddInterval = timestamp;
+                }
                 if ((timestamp-asteroidAddInterval >= SECONDS_TO_ADD*(long)1000000000)) {
                     asteroidField.setDensity(asteroidField.getDensity() + 1);
                     text.addDiff(1);
@@ -284,10 +272,11 @@ public class AsteroidsFX extends Application {
         paused = sPause;
         asteroidField.setPause(sPause);
         playerOne.setPause(sPause);
-        if (sPause)
+        if (sPause) {
             statusTimer.stop();
-        else
+        } else {
             statusTimer.start();
+        }
     }       
  
     
